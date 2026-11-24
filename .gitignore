@@ -4,6 +4,4 @@
 node_modules/
 dist/
 coverage/
-backend/*.tsbuildinfo
-backend/.eslintcache
 .DS_Store

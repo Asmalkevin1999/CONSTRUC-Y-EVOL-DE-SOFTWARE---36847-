@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS persona (
+CREATE SCHEMA IF NOT EXISTS biblioteca;
+
+CREATE TABLE IF NOT EXISTS biblioteca.persona (
     id_persona UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombres VARCHAR(100) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
@@ -8,7 +10,7 @@ CREATE TABLE IF NOT EXISTS persona (
     estado BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXISTS usuario (
+CREATE TABLE IF NOT EXISTS biblioteca.usuario (
     id_usuario UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_persona UUID NOT NULL UNIQUE,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -16,25 +18,25 @@ CREATE TABLE IF NOT EXISTS usuario (
     estado BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_usuario_persona
-        FOREIGN KEY (id_persona) REFERENCES persona(id_persona)
+        FOREIGN KEY (id_persona) REFERENCES biblioteca.persona(id_persona)
 );
 
-CREATE TABLE IF NOT EXISTS rol (
+CREATE TABLE IF NOT EXISTS biblioteca.rol (
     id_rol UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre VARCHAR(50) NOT NULL UNIQUE,
     descripcion VARCHAR(255),
     estado BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXISTS usuario_rol (
+CREATE TABLE IF NOT EXISTS biblioteca.usuario_rol (
     id_usuario_rol UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_usuario UUID NOT NULL,
     id_rol UUID NOT NULL,
     fecha_asignacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     estado BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT fk_usuario_rol_usuario
-        FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+        FOREIGN KEY (id_usuario) REFERENCES biblioteca.usuario(id_usuario),
     CONSTRAINT fk_usuario_rol_rol
-        FOREIGN KEY (id_rol) REFERENCES rol(id_rol),
+        FOREIGN KEY (id_rol) REFERENCES biblioteca.rol(id_rol),
     CONSTRAINT uq_usuario_rol UNIQUE (id_usuario, id_rol)
 );
